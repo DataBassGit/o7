@@ -18,11 +18,7 @@ logging:
   files:  # Log levels: critical, error, warning, info, debug
     agentforge: info
     model_io: debug
-    chroma_utils: critical
-    DiscordClient: critical
-    Formatting: error
-    Memory: error
-    o7: warning
+    cog: warning
 misc:
   on_the_fly: true  # Enables real-time dynamic adjustments for prompts and agent setting overrides
 

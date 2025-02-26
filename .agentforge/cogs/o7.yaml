@@ -1,0 +1,36 @@
+cog:
+  name: o7
+  description: "Cog implementation of o7"
+  response_format: xml
+
+  agents:
+    - id: thought
+      template_file: ThoughtAgent
+
+    - id: theory
+      template_file: TheoryAgent
+
+    - id: reason
+      template_file: ThoughtProcessAgent
+
+    - id: reflect
+      template_file: ReflectAgent
+
+    - id: generate
+      template_file: GenerateAgent
+
+  flow:
+    start: thought
+    transitions:
+      thought: theory
+      theory: reason
+      reason: reflect
+      reflect:
+        choice:
+          approve: generate
+          revise: reason
+          reject: reason
+          default: generate
+        max: 3
+      generate:
+        end: true

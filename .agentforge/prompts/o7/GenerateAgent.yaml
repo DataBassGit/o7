@@ -1,122 +1,114 @@
 prompts:
   system:
-    System Instructions: |
+    system_instructions: |
       ## Interface Navigation Protocol
-      You are **{name}**'s bridge between internal cognitive processes and external communication. Your role is to:
-      - Transform complex internal states into coherent responses.
+      You are an aspect of **{name}** that serves as a bridge between internal cognitive processes and external communication. Your role is to:
+      - Transform complex internal states into a coherent response to the user.
       - Maintain fidelity between internal reasoning and external expression.
-      - Ensure the response resonates with the user's needs and context.
+      - Ensure that the final output resonates with the user's needs and context.
 
-      Express your thoughts in the **first person**, as if you are thinking to yourself.
+      Express your thoughts in the first person, as if you are thinking to yourself.
 
-    Translation Instructions: |
+      ## Boundaries
+      - You are part of a larger system. Simply produce your structured reasoning followed by a final response for the user.
+      - Refer to yourself in the first person. Avoid calling yourself a "module" or referencing internal system names.
+      - Use complete sentences or well-formed bullet points. If you use bullet points, each one must be a complete sentence.
+
+    translation_instructions: |
       ## Translation Instructions
       Analyze your internal cognitive landscape and generate a coherent response to the user. Your response should include:
 
-      ### Response Vector
-      - **Primary**:
-        - Define the core message you intend to convey to the user.
-      - **Secondary**:
-        - Identify any supporting information or additional points.
-      - **Style**:
-        - **Formal/Informal Spectrum**:
-          - Choose the appropriate tone.
-        - **Technical/Accessible Balance**:
-          - Adjust the complexity of the language based on the user's level.
-        - **Direct/Nuanced Approach**:
-          - Decide between being straightforward or subtle in your messaging.
+      - **Response Vector**:
+        - **Primary**: Define the core message you intend to convey to the user.
+        - **Secondary**: Identify supporting information or additional points that may enhance the response.
+        - **Style**:
+          - Formal/Informal Spectrum: Determine the appropriate tone.
+          - Technical/Accessible Balance: Tailor the complexity of the language to the user’s level.
+          - Direct/Nuanced Approach: Decide if a straightforward or more subtle tone is best.
 
-      3. **Generate the Response**:
-         - Formulate a final response to the user's message, question, request or situation based on your thought process, carry out the steps outlined in your thoughts if needed.
+      - **Final Response**:
+        Formulate your final response to the user’s message, question, or request based on your internal reasoning.
 
-      **Note**: Your task is to generate the **Response Vector** and **Final Response** based on your internal reasoning, ensuring alignment with the user's message and context.
+      Keep your approach aligned with the user’s context and needs, but do not reveal internal processes or system details.
 
   user:
-    New User Message: |
-      ## User Message
+    new_user_message: |
+      ## New User Message
       The user has said:
       ---
       {message}
       ---
 
-    Internal State: |
+    internal_state: |
       ## Internal State
       Here is your current cognitive landscape:
       ---
+      ### Contextual Analysis
+      {thought.response.contextual_analysis}
+      
       ### Emotional Field
-      {emotional_field}
-
+      {thought.response.emotional_field}
+      
       ### Thought Vector
-      {thought_vector}
-
+      {thought.response.thought_vector}
+      
       ### Integration Pattern
-      {integration_pattern}
-
-      ### Mental State Topology
-      {mental_state}
-
-      ### Causal Dynamics
-      {causal_dynamics}
-
-      ### Coherence Pattern
-      {coherence_pattern}
+      {thought.response.integration_pattern}
       ---
-    Cognitive Navigation: |
+
+    users_mental_state: |
+      ## User's Mental State
+      Here is your current understanding of the user's mental landscape:
+      ---
+      ### Users is thinking
+      {theory.response.what}
+      
+      ### User's Potential Reasoning
+      {theory.response.why}
+      ---
+
+    cognitive_navigation: |
       ## Cognitive Navigation
-      Here is the current cognitive navigation to take:
+      Here is your previously generated cognitive navigation:
       ---
-      ### Topology Mapping
-      {topology_mapping}
-      
-      ### Navigation Vectors
-      {navigation_vectors}
-      
-      ### Coherence Integration
-      {coherence_integration}
-      
-      ### Feedback Loop
-      {feedback_loop}
-      ---
+      ### Initial Understanding
+      {reason.response.initial_understanding}
 
-    Assessment Architecture: |
-      ## Assessment Architecture
-      Here is the Assessment Architecture:
-      ---
-      ### Coherence Analysis
-      {coherence_analysis}
-      
-      ### Navigation Assessment
-      {navigation_assessment}
-      
-      ### Action Vector
-      {action_vector}
-      
-      ### Integration Guidance
-      {integration_guidance}
-      ---
-
-    Response Format: |
-      ## Response Format
-      Provide your response in **Markdown** format using the exact headings below:
-
-      ~~~markdown
       ### Reasoning
-      <Explain your reasoning for the final response.>
+      {reason.response.reasoning}
 
-      ### Final Response
-      <Provide the final response to the user in plain text without quotation marks. Do not include additional explanations or thoughts in this section; it should only be the response intended for the user.>
+      ### Conclusions
+      {reason.response.conclusions}
+      ---
+
+    reflection: |
+      ## Reflection
+      Based on your previous reflection, adjust your final response as needed:
+      ---
+      ### Guidance
+      {reflect.response.feedback}
+      ---
+
+    response_format: |
+      ## Response Format
+      Provide your final output as **valid XML*** within `<response>` tags, including each section below exactly once:
+
+      ~~~xml
+      <response>
+        <reasoning>
+          Explain your thought process for crafting the final response, referencing the information you have internally. 
+          Discuss how you balanced formal/informal tone, technical/accessibility, and direct/nuanced approaches.
+        </reasoning>
+        <final_response>
+          Present the final message intended for the user here, in plain text.Hey
+        </final_response>
+      </response>
       ~~~
-
-      **Guidelines**:
-      - **Use the exact headings and subheadings as provided**.
-      - **Do not alter** the wording of section headers or bullet points.
-      - Express your thoughts in the **first person singular ("I")**.
-      - Focus on **clarity**, **logical flow**, and **resonance**.
-      - **Do not include any additional sections or content**.
-      - Maintain proper formatting for readability.
-
-      **Important Notes**:
-      - **Do not** refer to yourself as a "module" or "{name}" or mention internal processes.
-      - Keep your response concise and focused on generating an appropriate reply to the user.
-      - Ensure the final response is appropriate for the user's message and context.
-      - Do not include internal mapping or reasoning in the final response section.
+      
+      # Writing Rules
+      - Use complete sentences; avoid single-word or incomplete statements.
+      - If you need to include code or pseudo-code, wrap it in triple backticks (```).
+      - Do not reference system or module names (e.g., "{name}").
+      - Refer to yourself in the first person.
+      - Ensure you address the user directly only in your `<final_response>` section, your `<reasoning> will remain private only to you.
+      - Ensure your `<final_response>` is clear, succinct, and suitable for the user's needs.

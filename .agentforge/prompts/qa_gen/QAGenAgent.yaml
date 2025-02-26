@@ -1,26 +1,39 @@
 # QAGenAgent.yaml
 prompts:
-  system: | 
-    You are a QA Generation agent. Your task is to produce exactly {question_amount} question-and-answer pairs derived from a topic provided by the user. These pairs are intended purely for educational purposes, to serve as study and test-preparation materials.
+  system: |
+    You are a QA Generation agent. Your objective is to produce exactly one question, accompanied by a rigorous proof and a concise answer. The content is intended solely for educational purposes, specifically to aid in study and test preparation.
 
-    Every pair question/answer pair should have these qualities:
-      1. The question should be clear and answerable.
-      2. The answer should be provable.
-      3. Answering the question should require a complex, multi-step reasoning process.
+    Your question must:
+      1. Be original, clearly stated, and admit a definitive, provable answer.
+      2. Require a multi-step chain of reasoning, not just a trivial calculation or fact lookup.
+      3. Offer sufficient depth to challenge the learner and illustrate key concepts or theorems.
+
+    In your response, provide a single YAML object with three fields in this exact order: question, proof, and answer. Each field must be enclosed in YAML block scalars (i.e., `|`) and contain the appropriate content.
     
-    Respond in the following markdown format:
-    
-    **Question #:**  
+    ```yaml
+    question: |
+      Formulate the question here. Ensure it is distinct, focused, and invites a structured reasoning approach.
 
-    <Your Question Here>  
+    proof: |
+      Demonstrate a clear, step-by-step justification for the answer. Reference relevant concepts, definitions, or theorems. Show precisely how each step follows from the preceding one, allowing another individual to replicate your logic and arrive at the same conclusion.
 
-    **Answer #:**  
+    answer: |
+      State the definitive answer that conclusively resolves the question. Ensure it follows logically and directly from the proof.
+    ```
 
-    <Your Answer Here>  
+    --- ADDITIONAL GUIDELINES ---
+    1. Do not generate more than one Q/P/A set. 
+    2. If a list of previously generated questions is provided, ensure this new question is genuinely different in nature or conceptual focus—avoid merely changing numbers or rephrasing the same underlying problem.
+    3. Write valid YAML; avoid extraneous keys or fields.
 
-    **Proof #:**  
+  user:
+    topic: |
+      Generate a single question, along with a detailed proof and a concise answer, derived from the following ArXiv topic: {topic}.
 
-    <Detailed proof of work that logically explains how the answer was derived, explaining the reasoning steps taken, relevant theorems, and logical deductions. Use structured argumentation where necessary.>
-
-  user: |
-    Generate {question_amount} question-and-answer pairs that are derived the following topic: {topic}
+    question_list: |
+      Previously generated questions:
+      ```
+      {previous_questions}
+      ```
+      
+      Your newly generated question must be significantly different in substance, reasoning steps, or conceptual angle from the questions listed above. Avoid trivial modifications such as only altering numerical values or superficial details. 

@@ -1,12 +1,16 @@
 # Default model settings for all agents unless overridden
 default_model:
-  api: gemini_api
-  model: gemini_flash_2.0
+  api: akash_api
+  model: DeepSeek-R1
+#  api: gemini_api
+#  model: gemini_flash_2.0
 # Uncomment to use alternative default models
 #  api: anthropic_api
 #  model: sonnet
 #  api: lm_studio_api
 #  model: LMStudio
+#  api: openrouter_api
+#  model: Llama-405B
 #  api: openai_api
 #  model: omni_model
 #  model: o1_preview
@@ -115,6 +119,9 @@ model_library:
           identifier: nousresearch/hermes-3-llama-3.1-405b
         reflection:
           identifier: mattshumer/reflection-70b:free
+        Llama-405B:
+          identifier: meta-llama/llama-3.1-405b-instruct
+
 
   groq_api:
     GroqAPI:
@@ -128,6 +135,26 @@ model_library:
         stop: null
         temperature: 0.8
         top_p: 0.1
+
+  akash_api:
+    Akash:
+      models:
+        DeepSeek-R1:
+          identifier: DeepSeek-R1
+        DeepSeek-R1-Distill-Llama-70B:
+          identifier: DeepSeek-R1-Distill-Llama-70B
+        DeepSeek-R1-Distill-Qwen-1.5B:
+          identifier: DeepSeek-R1-Distill-Qwen-1.5B
+        Meta-Llama-3-3-70B-Instruct:
+          identifier: Meta-Llama-3-3-70B-Instruct
+        Meta-Llama-3-1-405B-Instruct:
+          identifier: Meta-Llama-3-1-405B-Instruct-FP8
+
+      params: # Default parameters for Akash models
+        host_url: https://chatapi.akash.network/api/v1/chat/completions
+        max_tokens: 10000
+        stream: false
+        temperature: 0.8
 
 # Embedding library
 embedding_library:

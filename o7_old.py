@@ -104,26 +104,26 @@ class O7:
         self.cognition = {}
 
         # Grouping agent-related instances into a dictionary
-        # self.agents = {
-        #     "thought": O7Agent("ThoughtAgent"),
-        #     "theory": O7Agent("TheoryAgent"),
-        #     "cot": O7Agent("ThoughtProcessAgent"),
-        #     "generate": O7Agent("GenerateAgent"),
-        #     "reflect": O7Agent("ReflectAgent"),
-        # }
+        self.agents = {
+            "thought": O7Agent("ThoughtAgent"),
+            "theory": O7Agent("TheoryAgent"),
+            "cot": O7Agent("ThoughtProcessAgent"),
+            "generate": O7Agent("GenerateAgent"),
+            "reflect": O7Agent("ReflectAgent"),
+        }
 
-    # def run_o7(self, message):
-    #     self._reset_cognition()
-    #     self.message = message
-    #
-    #     # Run the processing chain:
-    #     self.run_agent('thought')
-    #     self.run_agent('theory')
-    #     self.run_cognition_process()
-    #     self.run_agent('generate')
-    #     self.response = self.cognition['generate'].get('Final Response')
-    #
-    #     return self.build_json()
+    def run_o7(self, message):
+        self._reset_cognition()
+        self.message = message
+
+        # Run the processing chain:
+        self.run_agent('thought')
+        self.run_agent('theory')
+        self.run_cognition_process()
+        self.run_agent('generate')
+        self.response = self.cognition['generate'].get('Final Response')
+
+        return self.build_json()
         # category = self.message.get('category')
         # if category:
         #     self.generate_jsonl(category)
@@ -286,7 +286,50 @@ class O7:
             self.logger.log("No 'Primary' found in 'Action Vector'. Handling as parsing error.", 'warning',
                             'o7')
 
+    # def _determine_action(self, reflection):
+    #     choice = reflection["Choice"].strip().lower()
+    #     reason = reflection.get('Reason', 'No reason provided.')
+    #
+    #     actions = {
+    #         'approve': {
+    #             'action': 'approve',
+    #             'log': "Approved thought process."
+    #         },
+    #         'revise': {
+    #             'action': 'revise',
+    #             'log': f"Revision needed due to: {reason}"
+    #         },
+    #         'reject': {
+    #             'action': 'reject',
+    #             'log': f"Thought process rejected due to: {reason}"
+    #         },
+    #         'clarify': {
+    #             'action': 'clarify',
+    #             'log': f"Clarification needed due to: {reason}"
+    #         }
+    #     }
+    #
+    #     for key, value in actions.items():
+    #         if key in choice:
+    #             self.logger.log(value['log'], 'info', 'o7')
+    #             return value['action']
+    #
+    #     self.logger.log(f"Unknown choice in reflection: '{choice}'", 'warning', 'o7')
+    #     return 'unknown'
 
+    def _handle_parsing_error(self, reflection):
+        self.logger.log(f"Parsing Error in Reflection: {reflection}\nRerunning reflection...", 'error', 'o7')
+        self.run_agent('reflect')
+
+    def _reset_cognition(self):
+        self.cognition = {
+            "thought": {},
+            "theory": {},
+            "cot": {},
+            "reflect": {},
+            "generate": {},
+        }
+        self.assistant_flow = []
 
     @staticmethod
     def sanitize_category(category):

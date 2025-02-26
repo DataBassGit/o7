@@ -2,8 +2,8 @@
 import os
 import json
 import time
-from o7 import O7
 from checkpoint_manager import CheckpointManager
+from agentforge.cog import Cog
 
 def sanitize_category(category):
     return category.replace(' ', '_').replace('/', '_')
@@ -14,7 +14,7 @@ class ProcessQAsByCategory:
         self.max_retries = max_retries
         self.retry_delay = retry_delay
         self.output_dir = output_dir
-        self.o7 = O7()
+        self.o7 = Cog('o7')
 
         # Instantiate a checkpoint manager for processing.
         self.checkpoint_manager = CheckpointManager("processed_categories.json")
@@ -69,7 +69,7 @@ class ProcessQAsByCategory:
         attempts = 0
         while attempts < self.max_retries:
             try:
-                response = self.o7.run_o7(question)
+                response = self.o7.run(message=question)
                 self.write_response(category, response)
                 return True
             except Exception as e:
