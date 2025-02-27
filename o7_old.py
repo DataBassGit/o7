@@ -79,11 +79,6 @@ def thought_flow_to_xml(thought_flow):
 
     # Join the XML lines into a single string
     xml_output = "\n".join(xml_output_lines)
-
-    # Create XML File for easy viewing of flow
-    # with open('thought_flow_output.xml', 'a') as file:
-    #     file.write(xml_output)
-
     return xml_output
 
 def parse_action_vector(action_vector_str):

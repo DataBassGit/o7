@@ -17,6 +17,8 @@ prompts:
     2) A score from 0 to 100 indicating how closely it aligns with the gold solution (both in correctness and logical coherence).
 
   user: |
+    ---
+    
     **Question**: 
     {question}
 
@@ -31,10 +33,19 @@ prompts:
 
     ---
 
-    Please provide your evaluation of the Given Answer’s chain-of-thought and final conclusion, focusing on overall correctness, clarity, and logical consistency. Then, provide a numeric score (0–100). Format your response exactly as follows:
+  response_format: |
+    ## Response Format
+    Please provide your evaluation of the Given Answer’s chain-of-thought and final conclusion, focusing on overall correctness, clarity, and logical consistency. Then, provide a numeric score (0–100). Provide your final output as **valid YAML** within triple backticks:
+    
+    ```yaml
+    assessment: |
+      your explanation here
+    score: |
+      integer score 0-100
+    ```
 
-    **Assessment**:
-    <your explanation here>
+    If you need to include code or pseudo-code within any key, wrap that code in triple tildes (~~~).
 
-    **Score**:
-    <integer score 0-100>
+    # Writing Rules
+    - Use complete sentences; avoid single-word or incomplete statements.
+    - Do not address the user directly; focus on your assessment and score.

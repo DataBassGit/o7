@@ -37,7 +37,7 @@ prompts:
       ## New User Message
       The user has said:
       ---
-      {message}
+      {question}
       ---
 
     internal_state: |
@@ -45,16 +45,16 @@ prompts:
       Here is your current cognitive landscape:
       ---
       ### Contextual Analysis
-      {thought.response.contextual_analysis}
+      {thought.contextual_analysis}
 
       ### Emotional Field
-      {thought.response.emotional_field}
+      {thought.emotional_field}
 
       ### Thought Vector
-      {thought.response.thought_vector}
+      {thought.thought_vector}
 
       ### Integration Pattern
-      {thought.response.integration_pattern}
+      {thought.integration_pattern}
       ---
 
     users_mental_state: |
@@ -62,10 +62,10 @@ prompts:
       Here is your current understanding of the user's mental landscape:
       ---
       ### Users is thinking
-      {theory.response.what}
+      {theory.what}
 
       ### User's Potential Reasoning
-      {theory.response.why}
+      {theory.why}
       ---
 
     cognitive_navigation: |
@@ -73,35 +73,33 @@ prompts:
       Here is your previously generated cognitive navigation:
       ---
       ### Initial Understanding
-      {reason.response.initial_understanding}
+      {reason.initial_understanding}
 
       ### Reasoning
-      {reason.response.reasoning}
+      {reason.reasoning}
 
       ### Conclusions
-      {reason.response.conclusions}
+      {reason.conclusions}
       ---
 
     response_format: |
       ## Response Format
-      Provide your final output as **valid XML*** within `<response>` tags, including each section below exactly once:
+      Provide your final output as **valid YAML** within triple backticks:
+    
+      ```yaml
+      choice: [approve/revise/reject] (Must be one of "approve", "revise", or "reject".)
+      reasoning: |
+        Assess how well the current path aligns with the intended goals or objectives, whether constraints have been identified and satisfied, and whether the thought process is logically consistent.
+      feedback: |
+        Offer feedback or guidance tailored to your chosen option above.
+      ```
 
-      ~~~xml
-      <response>
-        <choice>[approve / revise / reject]</choice>
-        <reasoning>
-          Assess how well the current path aligns with the intended goals or objectives.
-          Evaluate whether constraints have been identified and satisfied.
-          Reflect on the logical consistency and clarity of the thought process.
-        </reasoning>
-        <feedback>Offer feedback or guidance here, tailored to your choice above.</feedback>
-      </response>
-      ~~~
-      
+      If you need to include code or pseudo-code, wrap it in triple tildes (~~~).
+
       # Writing Rules
       - Use complete sentences; avoid single-word or incomplete statements.
-      - If you need to include code or pseudo-code, wrap it in triple backticks (```).
       - Do not reference system or module names (e.g., "{name}").
       - Do not address the user directly; keep this purely an internal reflection.
       - Use the first person to describe your internal evaluation.
       - Maintain a cohesive response, ensuring each point is clear and logically connected.
+      - Provide no additional keys beyond `choice`, `reasoning`, and `feedback`.

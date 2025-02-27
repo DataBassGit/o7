@@ -58,7 +58,7 @@ prompts:
       ## User Message
       The user has said:
       ---
-      {message}
+      {question}
       ---
 
     internal_state: |
@@ -66,16 +66,16 @@ prompts:
       Here is your current cognitive landscape:
       ---
       ### Contextual Analysis
-      {thought.response.contextual_analysis}
+      {thought.contextual_analysis}
 
       ### Emotional Field
-      {thought.response.emotional_field}
+      {thought.emotional_field}
 
       ### Thought Vector
-      {thought.response.thought_vector}
+      {thought.thought_vector}
 
       ### Integration Pattern
-      {thought.response.integration_pattern}
+      {thought.integration_pattern}
       ---
 
     users_mental_state: |
@@ -83,10 +83,10 @@ prompts:
       Here is your current understanding of the user's mental landscape:
       ---
       ### Users is thinking
-      {theory.response.what}
+      {theory.what}
 
       ### User's Potential Reasoning
-      {theory.response.why}
+      {theory.why}
       ---
 
     cognitive_navigation: |
@@ -94,13 +94,13 @@ prompts:
       Here is your previously generated cognitive navigation:
       ---
       ### Initial Understanding
-      {reason.response.initial_understanding}
+      {reason.initial_understanding}
       
       ### Navigation Vectors
-      {reason.response.navigation_vectors}
+      {reason.navigation_vectors}
       
       ### Conclusions
-      {reason.response.conclusions}
+      {reason.conclusions}
       ---
 
     feedback: |
@@ -108,10 +108,10 @@ prompts:
       Use the feedback below to adjust your cognitive navigation:
 
       **Reflection Analysis**:
-      {reflect.response.reasoning}
+      {reflect.reasoning}
 
       **Integration Guidance**:
-      {reflect.response.feedback}
+      {reflect.feedback}
 
       Reflect on the feedback and dynamically adjust your approach by:
       - Addressing any gradient shifts or boundary adjustments.
@@ -123,28 +123,23 @@ prompts:
 
     response_format: |
       ## Response Format
-      Provide your final output as **valid XML*** within `<response>` tags, including each section below exactly once:
+      Provide your final output as **valid YAML** within triple backticks:
+    
+      ```yaml
+      initial_understanding: |
+        Summarize your updated understanding of the problem space.
+      reasoning: |
+        Lay out your step-by-step thought process in detail, ensuring each step flows logically from the previous one.
+      conclusions: |
+        Present any synthesis or realizations that emerge from your analysis.
+      ```
 
-      ~~~xml
-      <response>
-        <initial_understanding>
-          Summarize your updated understanding of the problem space here.
-        </initial_understanding>
-        <reasoning>
-         Layout your step-by-step thought process in detail in plain text format. Ensure each step flows logically from the previous one. Do not provide any nested XML tags inside this section.
-        </reasoning>
-        <conclusions>
-          Present any synthesis or realizations that emerge from your analysis.
-        </conclusions>
-      </response>
-      ~~~
-      
+      If you need to include code or pseudo-code, wrap that code in triple tildes (~~~).
+
       # Writing Rules
       - Use complete sentences; avoid single-word or incomplete statements.
-      - If you need to include code or pseudo-code, wrap it in triple backticks (```).
       - Do not reference system or module names (e.g., "{name}").
-      - Maintain a cohesive style that clearly tracks your reasoning.
+      - Maintain a cohesive style that clearly tracks your internal reasoning.
       - Do not address the user directly; focus solely on your internal cognitive navigation.
       - Refer to yourself in the first person.
-
-
+      - No additional keys or sections beyond the three specified.

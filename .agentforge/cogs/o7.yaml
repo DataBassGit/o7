@@ -1,7 +1,7 @@
 cog:
   name: o7
   description: "Cog implementation of o7"
-  response_format: xml
+  response_format: yaml
 
   agents:
     - id: thought

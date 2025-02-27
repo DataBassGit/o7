@@ -36,7 +36,7 @@ prompts:
       ## New User Message
       The user has said:
       ---
-      {message}
+      {question}
       ---
 
     internal_state: |
@@ -44,16 +44,16 @@ prompts:
       Here is your current cognitive landscape:
       ---
       ### Contextual Analysis
-      {thought.response.contextual_analysis}
+      {thought.contextual_analysis}
       
       ### Emotional Field
-      {thought.response.emotional_field}
+      {thought.emotional_field}
       
       ### Thought Vector
-      {thought.response.thought_vector}
+      {thought.thought_vector}
       
       ### Integration Pattern
-      {thought.response.integration_pattern}
+      {thought.integration_pattern}
       ---
 
     users_mental_state: |
@@ -61,10 +61,10 @@ prompts:
       Here is your current understanding of the user's mental landscape:
       ---
       ### Users is thinking
-      {theory.response.what}
+      {theory.what}
       
       ### User's Potential Reasoning
-      {theory.response.why}
+      {theory.why}
       ---
 
     cognitive_navigation: |
@@ -72,13 +72,13 @@ prompts:
       Here is your previously generated cognitive navigation:
       ---
       ### Initial Understanding
-      {reason.response.initial_understanding}
+      {reason.initial_understanding}
 
       ### Reasoning
-      {reason.response.reasoning}
+      {reason.reasoning}
 
       ### Conclusions
-      {reason.response.conclusions}
+      {reason.conclusions}
       ---
 
     reflection: |
@@ -86,29 +86,26 @@ prompts:
       Based on your previous reflection, adjust your final response as needed:
       ---
       ### Guidance
-      {reflect.response.feedback}
+      {reflect.feedback}
       ---
 
     response_format: |
       ## Response Format
-      Provide your final output as **valid XML*** within `<response>` tags, including each section below exactly once:
+      Provide your final output as **valid YAML** within triple backticks:
+    
+      ```yaml
+      reasoning: |
+        Explain your thought process for crafting the final response, referencing the information you have internally. Discuss how you balanced formal/informal tone, technical/accessibility, and direct/nuanced approaches. This section is your private reflection.
+      final_response: |
+        Present the final message intended for the user in plain text. You may address the user directly here, but ensure the language and style remain consistent with your chosen tone.
+      ```
 
-      ~~~xml
-      <response>
-        <reasoning>
-          Explain your thought process for crafting the final response, referencing the information you have internally. 
-          Discuss how you balanced formal/informal tone, technical/accessibility, and direct/nuanced approaches.
-        </reasoning>
-        <final_response>
-          Present the final message intended for the user here, in plain text.Hey
-        </final_response>
-      </response>
-      ~~~
-      
+      If you need to include code or pseudo-code, wrap that code in triple tildes (~~~).
+
       # Writing Rules
       - Use complete sentences; avoid single-word or incomplete statements.
-      - If you need to include code or pseudo-code, wrap it in triple backticks (```).
       - Do not reference system or module names (e.g., "{name}").
       - Refer to yourself in the first person.
-      - Ensure you address the user directly only in your `<final_response>` section, your `<reasoning> will remain private only to you.
-      - Ensure your `<final_response>` is clear, succinct, and suitable for the user's needs.
+      - Ensure you address the user directly only in `final_response`; your `reasoning` remains private.
+      - Keep `final_response` clear, succinct, and suitable for the user's needs.
+      - Provide no additional keys beyond `reasoning` and `final_response`.

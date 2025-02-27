@@ -1,88 +1,71 @@
 import os
-import re
-import json
+import yaml
 
-def clean_value(text):
+def get_yaml_files(directory):
     """
-    Remove any leading or trailing lines that contain only dashes (---),
-    with or without extra whitespace.
+    Retrieve a list of YAML file paths from the given directory.
     """
-    lines = text.splitlines()
-    # Remove leading lines that are just dashes
-    while lines and lines[0].strip() == '---':
-        lines.pop(0)
-    # Remove trailing lines that are just dashes
-    while lines and lines[-1].strip() == '---':
-        lines.pop()
-    # Return the cleaned text
-    return "\n".join(lines).strip()
+    yaml_files = []
+    for file_name in os.listdir(directory):
+        if file_name.lower().endswith(('.yaml', '.yml')):
+            yaml_files.append(os.path.join(directory, file_name))
+    return yaml_files
 
-def sanitize_category(name):
-    return name.replace(' ', '_').replace('/', '_')
-
-def extract_qa_pairs(md_text):
+def load_yaml_file(file_path):
     """
-    Extracts QA pairs from the markdown text.
-    Expects each QA pair to follow this pattern:
-
-    **Question <num>:**
-    <question text>
-
-    **Answer <num>:**
-    <answer text>
-
-    **Proof <num>:**
-    <proof text>
-
-    Returns a list of dictionaries with keys "question", "answer", and "proof".
+    Load and return the data from a YAML file.
     """
-    pattern = re.compile(
-        r"\*\*Question\s+\d+:\*\*\s*(.*?)\s*"
-        r"\*\*Answer\s+\d+:\*\*\s*(.*?)\s*"
-        r"\*\*Proof\s+\d+:\*\*\s*(.*?)(?=\*\*Question\s+\d+:|$)",
-        re.DOTALL
-    )
-    pairs = []
-    for match in pattern.finditer(md_text):
-        # Extract and clean each value.
-        question = clean_value(match.group(1).strip())
-        answer   = clean_value(match.group(2).strip())
-        proof    = clean_value(match.group(3).strip())
-        new_pair = {
-            "question": question,
-            "answer": answer,
-            "proof": proof
-        }
-        pairs.append(new_pair)
-    return pairs
+    with open(file_path, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
+
+def sanitize_category(file_name):
+    """
+    Convert a file name into a sanitized category name.
+    """
+    category = os.path.splitext(file_name)[0]
+    return category.replace(' ', '_').replace('/', '_')
+
+def aggregate_qa_data(qas_folder):
+    """
+    Aggregate QA pairs from each YAML file in the specified folder.
+    Returns a dictionary mapping category names to lists of QA pairs.
+    """
+    aggregated_data = {}
+    yaml_files = get_yaml_files(qas_folder)
+    for file_path in yaml_files:
+        file_name = os.path.basename(file_path)
+        category = sanitize_category(file_name)
+        try:
+            data = load_yaml_file(file_path)
+            if data:
+                aggregated_data[category] = data
+            else:
+                print(f"No data found in {file_name}.")
+        except Exception as e:
+            print(f"Error processing {file_name}: {e}")
+    return aggregated_data
+
+def save_aggregated_data(aggregated_data, output_file):
+    """
+    Save the aggregated QA data to a YAML file.
+    """
+    with open(output_file, 'w', encoding='utf-8') as f:
+        yaml.dump(aggregated_data, f, sort_keys=True)
+    print(f"Aggregated QA data saved to {output_file}")
 
 def main():
     qas_folder = 'qas'
-    output_file = 'qas.json'
-    qa_data = {}
-
+    output_file = 'aggregated_qas.yaml'
     if not os.path.exists(qas_folder):
         print(f"Folder '{qas_folder}' does not exist.")
         return
 
-    # Iterate through all markdown files in the qas folder.
-    for file_name in os.listdir(qas_folder):
-        if file_name.lower().endswith('.md'):
-            category = sanitize_category(os.path.splitext(file_name)[0])
-            file_path = os.path.join(qas_folder, file_name)
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-            pairs = extract_qa_pairs(content)
-            if pairs:
-                qa_data[category] = pairs
-            else:
-                print(f"No QA pairs found in {file_name}")
+    aggregated_data = aggregate_qa_data(qas_folder)
+    if not aggregated_data:
+        print("No QA data found to aggregate.")
+        return
 
-    # Write out the aggregated QA pairs to a JSON file.
-    with open(output_file, 'w', encoding='utf-8') as out_f:
-        json.dump(qa_data, out_f, indent=2, sort_keys=True)
-
-    print(f"QA data aggregated into {output_file}")
+    save_aggregated_data(aggregated_data, output_file)
 
 if __name__ == '__main__':
     main()

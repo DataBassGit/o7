@@ -16,9 +16,10 @@ logging:
   console_level: warning
   folder: ./logs
   files:  # Log levels: critical, error, warning, info, debug
-    agentforge: info
+    agentforge: debug
     model_io: debug
-    cog: warning
+    cog: debug
+    ParsingProcessor: warning
 misc:
   on_the_fly: true  # Enables real-time dynamic adjustments for prompts and agent setting overrides
 

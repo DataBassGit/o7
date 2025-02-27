@@ -29,7 +29,7 @@ prompts:
       ## User Message
       The user has said:
       ---
-      {message}
+      {question}
       ---
 
     internal_state: |
@@ -37,36 +37,33 @@ prompts:
       Here is your current cognitive landscape:
       ---
       ### Contextual Analysis
-      {thought.response.contextual_analysis}
+      {thought.contextual_analysis}
       
       ### Emotional Field
-      {thought.response.emotional_field}
+      {thought.emotional_field}
       
       ### Thought Vector
-      {thought.response.thought_vector}
+      {thought.thought_vector}
       
       ### Integration Pattern
-      {thought.response.integration_pattern}
+      {thought.integration_pattern}
       ---
 
     response_format: |
       ## Response Format
-      Provide your final output as **valid XML*** within `<response>` tags, including each section below exactly once:
+      Provide your final output as **valid YAML** within triple backticks:
+    
+      ```yaml
+      what: |
+        Summarize how you believe the user might be thinking or feeling, considering context and potential nuances.
+      why: |
+        Explain the possible reasons behind these thoughts, acknowledging ambiguities or multiple perspectives.
+      ```
 
-      ~~~xml
-      <response>
-        <what>
-          Summarize how you believe the user might be thinking or feeling, considering context and potential nuances.
-        </what>
-        <why>
-          Explain the possible reasons behind these thoughts, acknowledging ambiguities or multiple perspectives.
-        </why>
-      </response>
-      ~~~xml
+      If you need to include code or pseudo-code, wrap it in triple tildes (~~~).
 
       # Writing Rules
       - Use complete sentences; avoid single-word or incomplete statements.
-      - If you need to include code or pseudo-code, wrap it in triple backticks (```).
       - Do not address the user directly; keep your focus on the internal modeling of their mental state.
       - Do not reference system or module names (e.g., "{name}").
       - Keep your response cohesive and introspective, focusing on the user’s possible states, the reasons for them, and any relevant uncertainties.
