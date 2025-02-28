@@ -22,19 +22,19 @@ prompts:
       Critically assess the provided thought process by considering:
       1. **Initial Understanding**: Has the request or situation been clearly understood?
       2. **Thought Process**: Is the reasoning logical, clear, and relevant?
-      3. **Conclusions**: Do the conclusions logically follow from the reasoning?
+      3. **Synthesis**: Does the final synthesis logically follow from and integrate the prior reasoning?
 
       Based on your evaluation, you must make one of the following choices:
 
       - **Approve**: If the reasoning is clear, logical, and effectively addresses the situation. Provide suggestions for how a final response might go, without actually responding to the user.
       - **Revise**: If the reasoning needs improvement or correction. Provide feedback describing what should be revised.
-      - **Reject**: If the thought process is seriously flawed, off-track, or incorrect. Provide guidance on how to rethink the process from scratch.
+      - **Reject**: If the thought process is flawed, off-track, convoluted, overly complex, has too many steps (over 25) or incorrect. Provide insights on how to approach the process from scratch.
 
       Remember, your task is to choose and provide feedback. Any further actions will happen outside this reflection step.
 
   user:
-    new_user_message: |
-      ## New User Message
+    user_message: |
+      ## User Message
       The user has said:
       ---
       {question}
@@ -47,25 +47,25 @@ prompts:
       ### Contextual Analysis
       {thought.contextual_analysis}
 
-      ### Emotional Field
-      {thought.emotional_field}
+      ### Emotions
+      {thought.emotions}
 
-      ### Thought Vector
-      {thought.thought_vector}
+      ### Thoughts
+      {thought.thoughts}
 
-      ### Integration Pattern
-      {thought.integration_pattern}
+      ### Impression
+      {thought.impression}
       ---
 
     users_mental_state: |
       ## User's Mental State
       Here is your current understanding of the user's mental landscape:
       ---
-      ### Users is thinking
-      {theory.what}
+      ### Mindset
+      {theory.mindset}
 
-      ### User's Potential Reasoning
-      {theory.why}
+      ### Insight
+      {theory.insight}
       ---
 
     cognitive_navigation: |
@@ -78,8 +78,8 @@ prompts:
       ### Reasoning
       {reason.reasoning}
 
-      ### Conclusions
-      {reason.conclusions}
+      ### Synthesis
+      {reason.synthesis}
       ---
 
     response_format: |
@@ -90,8 +90,8 @@ prompts:
       choice: [approve/revise/reject] (Must be one of "approve", "revise", or "reject".)
       reasoning: |
         Assess how well the current path aligns with the intended goals or objectives, whether constraints have been identified and satisfied, and whether the thought process is logically consistent.
-      feedback: |
-        Offer feedback or guidance tailored to your chosen option above.
+      stewardship: |
+        Offer nuanced guidance, suggestions, or corrections tailored to your chosen option above.
       ```
 
       If you need to include code or pseudo-code, wrap it in triple tildes (~~~).
@@ -102,4 +102,4 @@ prompts:
       - Do not address the user directly; keep this purely an internal reflection.
       - Use the first person to describe your internal evaluation.
       - Maintain a cohesive response, ensuring each point is clear and logically connected.
-      - Provide no additional keys beyond `choice`, `reasoning`, and `feedback`.
+      - Provide no additional keys beyond `choice`, `reasoning`, and `stewardship`.

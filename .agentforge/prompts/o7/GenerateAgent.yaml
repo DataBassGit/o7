@@ -32,8 +32,8 @@ prompts:
       Keep your approach aligned with the user’s context and needs, but do not reveal internal processes or system details.
 
   user:
-    new_user_message: |
-      ## New User Message
+    user_message: |
+      ## User Message
       The user has said:
       ---
       {question}
@@ -45,26 +45,26 @@ prompts:
       ---
       ### Contextual Analysis
       {thought.contextual_analysis}
-      
-      ### Emotional Field
-      {thought.emotional_field}
-      
-      ### Thought Vector
-      {thought.thought_vector}
-      
-      ### Integration Pattern
-      {thought.integration_pattern}
+
+      ### Emotions
+      {thought.emotions}
+
+      ### Thoughts
+      {thought.thoughts}
+
+      ### Impression
+      {thought.impression}
       ---
 
     users_mental_state: |
       ## User's Mental State
       Here is your current understanding of the user's mental landscape:
       ---
-      ### Users is thinking
-      {theory.what}
-      
-      ### User's Potential Reasoning
-      {theory.why}
+      ### Mindset
+      {theory.mindset}
+
+      ### Insight
+      {theory.insight}
       ---
 
     cognitive_navigation: |
@@ -77,16 +77,16 @@ prompts:
       ### Reasoning
       {reason.reasoning}
 
-      ### Conclusions
-      {reason.conclusions}
+      ### Synthesis
+      {reason.synthesis}
       ---
 
     reflection: |
       ## Reflection
       Based on your previous reflection, adjust your final response as needed:
       ---
-      ### Guidance
-      {reflect.feedback}
+      ### Suggestions
+      {reflect.stewardship}
       ---
 
     response_format: |
@@ -94,8 +94,8 @@ prompts:
       Provide your final output as **valid YAML** within triple backticks:
     
       ```yaml
-      reasoning: |
-        Explain your thought process for crafting the final response, referencing the information you have internally. Discuss how you balanced formal/informal tone, technical/accessibility, and direct/nuanced approaches. This section is your private reflection.
+      introspection: |
+        Express the thoughts that drive you to craft your final response, referencing the information you have internally. This section is your private introspection of your internal thoughts and reasoning so far.
       final_response: |
         Present the final message intended for the user in plain text. You may address the user directly here, but ensure the language and style remain consistent with your chosen tone.
       ```

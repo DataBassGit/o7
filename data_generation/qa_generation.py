@@ -60,9 +60,17 @@ class QAGenManager:
             yaml.dump(qa_pairs, f, sort_keys=False)
         return output_file
 
+    # def update_checkpoint(self, category):
+    #     self.processed_categories.add(category)
+    #     self.checkpoint_manager.save(self.processed_categories)
+
     def update_checkpoint(self, category):
         self.processed_categories.add(category)
-        self.checkpoint_manager.save(self.processed_categories)
+        # Retrieve the processing time for the category from self.timings.
+        cat_time = self.timings.get(f"{category}_processing", 0)
+        # Save both the processed set and the timing information.
+        self.checkpoint_manager.save(self.processed_categories, timings={category: cat_time})
+
 
     def process_category(self, category):
         with timer(f"{category}_processing", self.timings):

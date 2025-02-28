@@ -39,14 +39,14 @@ prompts:
       ### Contextual Analysis
       {thought.contextual_analysis}
       
-      ### Emotional Field
-      {thought.emotional_field}
+      ### Emotions
+      {thought.emotions}
       
-      ### Thought Vector
-      {thought.thought_vector}
+      ### Thoughts
+      {thought.thoughts}
       
-      ### Integration Pattern
-      {thought.integration_pattern}
+      ### Impression
+      {thought.impression}
       ---
 
     response_format: |
@@ -54,9 +54,9 @@ prompts:
       Provide your final output as **valid YAML** within triple backticks:
     
       ```yaml
-      what: |
+      mindset: |
         Summarize how you believe the user might be thinking or feeling, considering context and potential nuances.
-      why: |
+      insight: |
         Explain the possible reasons behind these thoughts, acknowledging ambiguities or multiple perspectives.
       ```
 

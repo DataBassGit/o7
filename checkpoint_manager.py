@@ -1,36 +1,49 @@
 import os
 import json
 
+
 class CheckpointManager:
-    def __init__(self, checkpoint_file):
-        self.checkpoint_file = checkpoint_file
+    def __init__(self, filename):
+        """
+        Initialize the checkpoint manager. The checkpoint file will be stored in a 'checkpoints'
+        folder.
+        """
+        self.folder = "checkpoints"
+        if not os.path.exists(self.folder):
+            os.makedirs(self.folder)
+        self.filepath = os.path.join(self.folder, filename)
+        # Structure of the checkpoint data:
+        # {
+        #    "processed": [list of category names],
+        #    "times": { "category_name": processing_time, ... }
+        # }
+        self.data = {
+            "processed": [],
+            "times": {}
+        }
+        if os.path.exists(self.filepath):
+            try:
+                with open(self.filepath, "r", encoding="utf-8") as f:
+                    self.data = json.load(f)
+            except Exception as e:
+                print(f"Error loading checkpoint file: {e}")
 
     def load(self):
-        """Load the checkpoint file and return a set of processed items."""
-        if os.path.exists(self.checkpoint_file):
-            try:
-                with open(self.checkpoint_file, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                    if isinstance(data, dict):
-                        # data is a dictionary with keys as processed items
-                        return set(data.keys())
-                    elif isinstance(data, list):
-                        # fallback if stored as a list
-                        return set(data)
-                    else:
-                        return set()
-            except Exception as e:
-                print(f"Error loading checkpoint file {self.checkpoint_file}: {e}")
-                return set()
-        return set()
+        """Return the set of processed categories."""
+        return set(self.data.get("processed", []))
 
-    def save(self, processed_set):
-        """Save the set of processed items as a dictionary with keys in alphabetical order."""
-        data = {item: True for item in processed_set}
-        with open(self.checkpoint_file, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, sort_keys=True)
+    def save(self, processed_set, timings=None):
+        """
+        Save the processed categories and optionally update the processing times.
 
-    def mark_processed(self, item, processed_set):
-        """Add an item to the processed set and save it immediately."""
-        processed_set.add(item)
-        self.save(processed_set)
+        :param processed_set: a set (or list) of processed category names.
+        :param timings: a dictionary mapping category names to their processing times.
+        """
+        self.data["processed"] = list(processed_set)
+        if timings:
+            self.data["times"].update(timings)
+        try:
+            with open(self.filepath, "w", encoding="utf-8") as f:
+                json.dump(self.data, f, indent=2)
+        except Exception as e:
+            print(f"Error saving checkpoint file: {e}")

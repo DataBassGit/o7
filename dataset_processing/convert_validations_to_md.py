@@ -4,9 +4,12 @@ import json
 
 
 def sanitize_category_name(filename):
-    """Convert a filename (without extension) into a human-friendly category title."""
+    """Convert a filename (without extension) into a human-friendly category title.
+
+    Now replaces underscores and periods with spaces.
+    """
     base = os.path.splitext(filename)[0]
-    return base.replace('_', ' ')
+    return base.replace('_', ' ').replace('.', ' ')
 
 
 def convert_json_to_markdown(json_data, category_title):
@@ -23,36 +26,33 @@ def convert_json_to_markdown(json_data, category_title):
     """
     markdown_lines = [f"# {category_title}\n"]
     for idx, qa in enumerate(json_data, start=1):
-        question = qa.get("question", "")
-        correct_answer = qa.get("correct_answer", "")
-        proof = qa.get("proof", "")
-        given_answer = qa.get("given_answer", "")
-        assessment = qa.get("assessment", "")
-        score = qa.get("score", "")
+        question = qa.get("question", "").strip()
+        correct_answer = qa.get("correct_answer", "").strip()
+        proof = qa.get("proof", "").strip()
+        given_answer = qa.get("given_answer", "").strip()
+        assessment = qa.get("assessment", "").strip()
+        score = qa.get("score", "").strip()
 
-        markdown_lines.append(f"## Question {idx} - Score: " + str(score))
+        markdown_lines.append(f"## Question {idx} - Score: {score}")
         markdown_lines.append("### Question")
         markdown_lines.append("")
         markdown_lines.append(question)
         markdown_lines.append("")
-        markdown_lines.append("### Correct Answer")
+        markdown_lines.append("### Given Answer")
         markdown_lines.append("")
-        markdown_lines.append(correct_answer)
+        markdown_lines.append(given_answer)
         markdown_lines.append("")
         markdown_lines.append("### Assessment")
         markdown_lines.append("")
         markdown_lines.append(assessment)
-        markdown_lines.append("### Given Answer")
         markdown_lines.append("")
-        markdown_lines.append("~~~")
-        markdown_lines.append(given_answer)
-        markdown_lines.append("~~~")
+        markdown_lines.append("### Reference Answer")
         markdown_lines.append("")
-        markdown_lines.append("### Proof")
+        markdown_lines.append(correct_answer)
         markdown_lines.append("")
-        markdown_lines.append("~~~")
+        markdown_lines.append("### Reference Proof")
+        markdown_lines.append("")
         markdown_lines.append(proof)
-        markdown_lines.append("~~~")
         markdown_lines.append("")
         markdown_lines.append("---")
         markdown_lines.append("")
@@ -62,7 +62,7 @@ def convert_json_to_markdown(json_data, category_title):
 
 def main():
     # Folder where the validator JSON files are stored.
-    responses_folder = "validator_outputs"
+    responses_folder = "../data_generation/validator_outputs"
     # Output folder for Markdown files.
     output_folder = "validator_markdown"
     os.makedirs(output_folder, exist_ok=True)

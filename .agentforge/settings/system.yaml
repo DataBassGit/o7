@@ -19,7 +19,7 @@ logging:
     agentforge: debug
     model_io: debug
     cog: debug
-    ParsingProcessor: warning
+    parsingprocessor: debug
 misc:
   on_the_fly: true  # Enables real-time dynamic adjustments for prompts and agent setting overrides
 

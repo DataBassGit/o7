@@ -16,36 +16,43 @@ prompts:
     1) A concise assessment (one to a few paragraphs) discussing the main strengths and weaknesses of the given answer’s reasoning and final result.
     2) A score from 0 to 100 indicating how closely it aligns with the gold solution (both in correctness and logical coherence).
 
-  user: |
-    ---
-    
-    **Question**: 
-    {question}
+  user:
+    instructions: | 
+      Please compare the following gold-standard reference with the given answer and proof. Evaluate how closely the reasoning and conclusion align with the gold standard, keeping in mind logical consistency and overall correctness.
+      
+      ---
+      
+      # Reference (Gold Standard)
+      **Question**: 
+      {question}
+      
+      **Proof**: 
+      {proof}
+      
+      **Answer**: 
+      {correct_answer}
+      
+      ---
+      
+      # Work to Evaluate
+      **Given Answer**: 
+      {given_answer}
+      
+      ---
 
-    **Correct Answer**:
-    {correct_answer}
-
-    **Proof**: 
-    {proof}
-
-    **Given Answer**:
-    {given_answer}
-
-    ---
-
-  response_format: |
-    ## Response Format
-    Please provide your evaluation of the Given Answer’s chain-of-thought and final conclusion, focusing on overall correctness, clarity, and logical consistency. Then, provide a numeric score (0–100). Provide your final output as **valid YAML** within triple backticks:
-    
-    ```yaml
-    assessment: |
-      your explanation here
-    score: |
-      integer score 0-100
-    ```
-
-    If you need to include code or pseudo-code within any key, wrap that code in triple tildes (~~~).
-
-    # Writing Rules
-    - Use complete sentences; avoid single-word or incomplete statements.
-    - Do not address the user directly; focus on your assessment and score.
+    response_format: |
+      # Response Format
+      Please provide your evaluation of the Given Answer’s chain-of-thought and final conclusion, focusing on overall correctness, clarity, and logical consistency. Then, provide a numeric score (0–100). Provide your final output as **valid YAML** within triple backticks:
+      
+      ```yaml
+      assessment: |
+        your explanation here
+      score: |
+        integer score 0-100
+      ```
+  
+      If you need to include code or pseudo-code within any key, wrap that code in triple tildes (~~~).
+  
+      # Writing Rules
+      - Use complete sentences; avoid single-word or incomplete statements.
+      - Do not address the user directly; focus on your assessment and score.
