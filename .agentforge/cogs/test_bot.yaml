@@ -1,0 +1,52 @@
+cog:
+  name: TestBot
+  description: "Cog Implementation of TestBot"
+  response_format: yaml
+
+  memory:
+    - id: general
+      # If no 'type' is defined, default to a base Memory class
+      query_before: [theory, reflect]
+      update_after: [generate]
+      query_keys:
+        - thought.thoughts
+      update_keys:
+        - response.final_answer
+        - user_message
+
+#    - id: scratchpad
+#      type: agentforge.memory.ScratchPadMemory
+#      query_before: [theory]
+#      update_after: [reason]
+#      query_keys:
+#        - user_message
+#      update_keys:
+#        - response.partial_explanation
+
+  agents:
+    - id: thought
+      template_file: ThoughtAgent
+    - id: theory
+      template_file: TheoryAgent
+    - id: reason
+      template_file: ThoughtProcessAgent
+    - id: reflect
+      template_file: ReflectAgent
+    - id: generate
+      template_file: GenerateAgent
+
+  flow:
+    start: thought
+    transitions:
+      thought: theory
+      theory: reason
+      reason: reflect
+      reflect:
+        choice:
+          approve: generate
+          revise: reason
+          reject: reason
+          default: generate
+        max_visits: 3
+      generate:
+        end: true

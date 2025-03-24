@@ -19,6 +19,16 @@ cog:
     - id: generate
       template_file: GenerateAgent
 
+  memory:
+    - id: general
+      # If no 'type' is defined, default to a base Memory class
+      query_before: [theory, reflect]
+      update_after: generate
+      query_keys: thought.thoughts
+      update_keys:
+        - question
+        - generate.final_response
+
   flow:
     start: thought
     transitions:
