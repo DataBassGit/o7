@@ -41,7 +41,7 @@ class CheckpointManager:
         """
         self.data["processed"] = list(processed_set)
         if timings:
-            self.data["times"].update_memory(timings)
+            self.data["times"].update(timings)
         try:
             with open(self.filepath, "w", encoding="utf-8") as f:
                 json.dump(self.data, f, indent=2)

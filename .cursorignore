@@ -1,0 +1,23 @@
+# Add directories or file patterns to ignore during indexing (e.g. foo/ or *.csv)
+.gitignore
+categories.txt
+venv/
+.idea/
+.env
+.cursorignore
+.cursorrules
+.cursorignore
+.cursorrules
+.cursorignore
+.cursorrules
+db/
+logs/
+
+
+__pycache__/
+.pyc
+.pyo
+.pyd
+.pyw
+.pyz
+.pywz

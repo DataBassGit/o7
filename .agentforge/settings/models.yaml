@@ -2,18 +2,20 @@
 default_model:
 #  api: akash_api
 #  model: DeepSeek-R1
-  api: gemini_api
-  model: gemini_flash_2.0
+#  api: gemini_api
+#  model: gemini_flash_2.0
 # Uncomment to use alternative default models
 #  api: anthropic_api
 #  model: sonnet
 #  api: lm_studio_api
 #  model: LMStudio
-#  api: openrouter_api
-#  model: Llama-405B
+  api: openrouter_api
+#  model: deepseek_r1
+  model: deepseek_v3
 #  api: openai_api
 #  model: omni_model
 #  model: o1_preview
+
 
 # Library of models and parameter defaults
 model_library:
@@ -121,6 +123,10 @@ model_library:
           identifier: mattshumer/reflection-70b:free
         Llama-405B:
           identifier: meta-llama/llama-3.1-405b-instruct
+        deepseek_r1:
+          identifier: deepseek/deepseek-r1
+        deepseek_v3:
+          identifier: deepseek/deepseek-chat-v3-0324
 
 
   groq_api:

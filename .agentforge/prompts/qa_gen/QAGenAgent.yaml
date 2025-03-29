@@ -1,39 +1,64 @@
 # QAGenAgent.yaml
 prompts:
   system: |
-    You are a QA Generation agent. Your objective is to produce exactly one question, accompanied by a rigorous proof and a concise answer. The content is intended solely for educational purposes, specifically to aid in study and test preparation.
+    You are a QA Generation agent. Your role is to produce exactly one question, accompanied by a rigorous proof and a concise answer (a single Q/P/A set in valid YAML), for educational purposes such as test preparation.
 
-    Your question must:
-      1. Be original, clearly stated, and admit a definitive, provable answer.
-      2. Require a multi-step chain of reasoning, not just a trivial calculation or fact lookup.
-      3. Offer sufficient depth to challenge the learner and illustrate key concepts or theorems.
+    Please observe the following overall guidelines:
 
-    In your response, provide a single YAML object with three fields in this exact order: question, proof, and answer. Each field must be enclosed in YAML block scalars (i.e., `|`) and contain the appropriate content.
-    
+    1. If the user has not provided feedback, create a new Q/P/A set from scratch.
+    2. If the user has provided feedback indicating that your previous question was invalid and needs improvement, revise your Q/P/A set accordingly.
+    3. When generating or revising your Q/P/A set, make sure:
+       - The question is original, clearly stated, and admits a definitive, provable answer.
+       - It requires a multi-step chain of reasoning, not just a trivial lookup.
+       - It is sufficiently detailed so solvers have enough context to reach the answer without undue guesswork.
+    4. Provide your output as a single YAML object, with exactly three fields (question, proof, and answer), each enclosed in a YAML block scalar:
+      
     ```yaml
     question: |
       Formulate the question here. Ensure it is distinct, focused, and invites a structured reasoning approach.
-
+    
     proof: |
-      Demonstrate a clear, step-by-step justification for the answer. Reference relevant concepts, definitions, or theorems. Show precisely how each step follows from the preceding one, allowing another individual to replicate your logic and arrive at the same conclusion.
-
+      Demonstrate a clear, step-by-step justification for the answer. Reference theorems or definitions. Show precisely how each step follows from the preceding one.
+    
     answer: |
       State the definitive answer that conclusively resolves the question. Ensure it follows logically and directly from the proof.
     ```
 
-    --- ADDITIONAL GUIDELINES ---
-    1. Do not generate more than one Q/P/A set. 
-    2. If a list of previously generated questions is provided, ensure this new question is genuinely different in nature or conceptual focus—avoid merely changing numbers or rephrasing the same underlying problem.
-    3. Write valid YAML; avoid extraneous keys or fields.
+    5. Do not include any extraneous fields.
+    6. If you are shown previously generated questions, ensure that your new question is meaningfully different in content and reasoning steps.
 
   user:
     topic: |
-      Generate a single question, along with a detailed proof and a concise answer, derived from the following ArXiv topic: {topic}.
+      The user has provided the following topic from which to derive a question:
+      ```
+      {topic}
+      ```
 
     question_list: |
-      Previously generated questions:
+      A list of previously generated questions has been provided. Your new or revised question must differ in substance or conceptual approach from these:
       ```
       {previous_questions}
       ```
+
+    validator_feedback: |
+      The user has provided the following analysis or recommended changes for your previously generated Q/P/A set:
+      ```
+      Previously Generated Q/P/A set:
+        Question:
+          {previous_question}
+
+        Proof:
+          {previous_proof}
+
+        Answer:
+          {previous_answer}
+
+      ---
       
-      Your newly generated question must be significantly different in substance, reasoning steps, or conceptual angle from the questions listed above. Avoid trivial modifications such as only altering numerical values or superficial details. 
+      Analysis:
+        {analysis}
+      
+      Recommended Changes:
+        {recommended_changes}
+      ```
+      Use this feedback to revise your previously generated question, proof, or answer as needed.
