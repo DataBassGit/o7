@@ -2,16 +2,16 @@
 default_model:
 #  api: akash_api
 #  model: DeepSeek-R1
-#  api: gemini_api
-#  model: gemini_flash_2.0
+  api: gemini_api
+  model: gemini_flash_2.0
 # Uncomment to use alternative default models
 #  api: anthropic_api
 #  model: sonnet
 #  api: lm_studio_api
 #  model: LMStudio
-  api: openrouter_api
+#  api: openrouter_api
 #  model: deepseek_r1
-  model: deepseek_v3
+#  model: deepseek_v3
 #  api: openai_api
 #  model: omni_model
 #  model: o1_preview

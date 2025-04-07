@@ -41,6 +41,6 @@ cog:
           revise: reason
           reject: reason
           default: generate
-        max: 3
+        max_visits: 3
       generate:
-        end: true
+        end: generate.final_response

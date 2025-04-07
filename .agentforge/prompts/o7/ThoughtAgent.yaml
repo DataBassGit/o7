@@ -40,7 +40,7 @@ prompts:
       emotions: |
         Describe the primary emotion(s) or emotional context evoked by the request or message.
       thoughts: |
-        Reflect on the thoughts the user's request evokes in you and take different possibilities under consideration.
+        Reflect on the thoughts the user's request or message evokes in you and take different possibilities under consideration.
       impression: |
         Explain how the emotional field and thought vector converge into a unified internal response.
       ```

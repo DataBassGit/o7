@@ -9,10 +9,11 @@ options:
 
 # Selected Embedding
 embedding:
-  selected: distil_roberta
+  selected: none
 
 # Embedding library (mapping of embeddings to their identifiers)
 embedding_library:
   distil_roberta: all-distilroberta-v1
   all_mini: all-MiniLM-L6-v2
+  openai_ada2: text-embedding-ada-002
 

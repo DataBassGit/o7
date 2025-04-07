@@ -17,7 +17,7 @@ def main():
         # pprint.pprint(flow)
         print(flow)
         print(f"---------")
-        print(output['generate'].get('final_response'))
+        print(output)
         print(f"---------")
 
 if __name__ == "__main__":
