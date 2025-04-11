@@ -321,7 +321,9 @@ class QAGenManager:
         print(f"Total run time: {total_elapsed:.2f} seconds")
         print("Timing Summary:")
         for task, elapsed in self.timings.items():
-            print(f" - {task}: {elapsed:.2f} seconds")
+            # Skip timing entries that start with "question_"
+            if not task.startswith("question_"):
+                print(f" - {task}: {elapsed:.2f} seconds")
 
     def start_time_counter(self):
         # Mark the start of the run.

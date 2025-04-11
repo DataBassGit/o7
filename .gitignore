@@ -180,3 +180,5 @@ Journal/
 /.vscode/
 
 Test.json
+/data_generation/qas/
+/data_generation/checkpoints/
